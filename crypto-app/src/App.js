@@ -2,12 +2,20 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import axios from 'axios';
 import Coin from './Coin';
+import alanBtnInstance from '@alan-ai/alan-sdk-web';
 
 function App() {
 	const [coins, setCoins] = useState([]);
 	const [search, setSearch] = useState('');
 
 	useEffect(() => {
+		var alanBtn = alanBtnInstance({
+			key: 'ff858e7802fd7173a369194856ec49032e956eca572e1d8b807a3e2338fdd0dc/stage',
+			onConnectionStatus: function (status) {
+				// status could be connected or disconnected
+			},
+			rootEl: document.getElementById('alan-btn'),
+		});
 		axios
 			.get(
 				'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false'
@@ -32,6 +40,7 @@ function App() {
 
 	return (
 		<div className='coin-app'>
+			<alanBtn className='alan-btn'></alanBtn>
 			<div className='coin-search'>
 				<h1 className='coin-text'>Search a currency</h1>
 				<form>
