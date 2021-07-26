@@ -1,6 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
+body {
+	background-color: #1a1a1c;
+}
+
+* {
+	align-items: center;
+}
+
 .coin-app {
+	background: #1a1a1c;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

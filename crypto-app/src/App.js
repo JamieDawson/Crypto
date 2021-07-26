@@ -2,19 +2,22 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import axios from 'axios';
 import Coin from './Coin';
-import alanBtnInstance from '@alan-ai/alan-sdk-web';
+import alanBtn from '@alan-ai/alan-sdk-web';
+require('dotenv').config();
 
 function App() {
 	const [coins, setCoins] = useState([]);
 	const [search, setSearch] = useState('');
 
 	useEffect(() => {
-		var alanBtn = alanBtnInstance({
-			key: 'ff858e7802fd7173a369194856ec49032e956eca572e1d8b807a3e2338fdd0dc/stage',
-			onConnectionStatus: function (status) {
-				// status could be connected or disconnected
+		alanBtn({
+			key: process.env.REACT_APP_ALAN_KEY,
+			onCommand: (commandData) => {
+				if (commandData.command === 'searchCoin') {
+					console.log(`FUNCITON CALLED HERE` + commandData.coinChoice);
+					setSearch(commandData.coinChoice);
+				}
 			},
-			rootEl: document.getElementById('alan-btn'),
 		});
 		axios
 			.get(
@@ -27,8 +30,6 @@ function App() {
 	}, []);
 
 	const handleChange = (e) => {
-		//gets called when typed
-		//console.log('www');
 		setSearch(e.target.value);
 	};
 
@@ -40,9 +41,8 @@ function App() {
 
 	return (
 		<div className='coin-app'>
-			<alanBtn className='alan-btn'></alanBtn>
 			<div className='coin-search'>
-				<h1 className='coin-text'>Search a currency</h1>
+				<h1 className='coin-text'>Search Cryptocurrency with text or voice!</h1>
 				<form>
 					<input
 						type='text'
